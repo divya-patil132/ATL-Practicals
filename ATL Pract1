@@ -1,0 +1,52 @@
+#libraries importing
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from pandas.plotting import andrews_curves, parallel_coordinates, radviz
+%matplotlib inline
+
+# seaborn style
+sns.set(style="whitegrid", color_codes=True)
+
+# loading the dataset from UCI
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+columns = ["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm", "Species"]
+
+# reading dataset into Pandas DataFrame
+df = pd.read_csv(url, header=None, names=columns)
+
+# showing the first few rows
+df.head()
+
+
+
+sns.jointplot(x="SepalLengthCm", y="SepalWidthCm", data=df, kind="scatter")
+
+
+g = sns.FacetGrid(df, hue="Species", height=5)
+g.map(plt.scatter, "SepalLengthCm", "SepalWidthCm")
+g.add_legend()
+
+
+sns.boxplot(x="Species", y="PetalLengthCm", data=df)
+
+sns.violinplot(x="Species", y="PetalLengthCm", data=df)
+
+
+g = sns.FacetGrid(df, hue="Species", height=6)
+g.map(sns.kdeplot, "PetalLengthCm", fill=True)
+g.add_legend()
+
+
+sns.pairplot(df, hue="Species", height=3)
+
+
+df.boxplot(by="Species", figsize=(12, 8))
+plt.tight_layout()
+
+
+plt.figure(figsize=(10, 5))
+andrews_curves(df, "Species")
+plt.show() 
